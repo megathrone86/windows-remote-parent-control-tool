@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        header {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 10px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>WRPCT - {%%systemName%%}</header>
+    <div>{%%currentTime%%}</div>
+    <div>
+        Статус системы: <strong>{%%gamesStatus%%}</strong>
+    </div>
+    <div>
+        Осталось: <strong>{%%gamesTimeLeft%%}</strong>
+    </div>
+    <div>
+        <form action="update" method="post">
+            <input type="text" name="amount" value="60">
+            <button type="submit" name="add">Добавить минуты</button>
+            <button type="submit" name="distract">Вычесть минуты</button>
+        </form>
+        <form action="allowgames" method="post"><button type="submit">Разрешить игры</button></form>
+        <form action="disallowgames" method="post"><button type="submit">Запретить игры</button></form>
+    </div>
+    <footer><a href="{%%projectUrl%%}">Страница проекта</a></footer>
+</body>
+</html>
