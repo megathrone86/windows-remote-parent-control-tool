@@ -105,7 +105,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Server\jquery-3.3.1.min.js" />
+    <EmbeddedResource Include="Server\md5.js" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server\Index.html" />
   </ItemGroup>

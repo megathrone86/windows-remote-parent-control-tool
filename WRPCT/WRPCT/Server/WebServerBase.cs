@@ -83,6 +83,12 @@ namespace WRPCT.Server
             return $"HTTP/1.1 {(int)code} {code}\nContent-type: text/html; charset=utf-8\nContent-Length:{htmlLength}\n\n" + html;
         }
 
+        protected string FileResult(string fileContent, HttpStatusCode code = HttpStatusCode.OK)
+        {
+            var fileLength = Encoding.UTF8.GetByteCount(fileContent);
+            return $"HTTP/1.1 {(int)code} {code}\nContent-type: text; charset=utf-8\nContent-Length:{fileLength}\n\n" + fileContent;
+        }
+
         protected string RedirectResult(string location)
         {
             return $"HTTP/1.1 {(int)HttpStatusCode.MovedPermanently} {HttpStatusCode.MovedPermanently}\nLocation: {location}\n\n";

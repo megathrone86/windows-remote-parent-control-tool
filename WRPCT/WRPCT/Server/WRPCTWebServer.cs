@@ -18,24 +18,30 @@ namespace WRPCT.Server
             try
             {
                 var requestStringHeader = requestString.Substring(0, Math.Min(100, requestString.Length)).ToUpper();
+
+                //index
                 if (requestStringHeader.StartsWith("GET / "))
                     return HtmlResult(GetIndexContent());
 
+                //additional files
                 if (requestStringHeader.StartsWith("GET /"))
-                    return RedirectResult("/");
+                {
+                    var ts = requestString.Split(new char[] { ' ' });
+                    var path = ts[1].Substring(1);
+                    return CreateFileResult(path);
+                }
 
+                //commands
                 if (requestStringHeader.StartsWith("POST /DISALLOWGAMES "))
                 {
                     MainService.Instance.ControlService.DisableGames();
                     return RedirectResult("/");
                 }
-
                 if (requestStringHeader.StartsWith("POST /ALLOWGAMES "))
                 {
                     MainService.Instance.ControlService.EnableGames();
                     return RedirectResult("/");
                 }
-
                 if (requestStringHeader.StartsWith("POST /UPDATE "))
                 {
                     var requestParams = GetParametersFromPost(requestString);
@@ -43,11 +49,18 @@ namespace WRPCT.Server
                     return RedirectResult("/");
                 }
 
+                //default
                 return HtmlResult("", HttpStatusCode.NotFound);
             } catch (Exception ex)
             {
                 return HtmlResult(ex.ToString(), HttpStatusCode.InternalServerError);
             }
+        }
+
+        string CreateFileResult(string path)
+        {
+            var fileContent = ResourceHelper.GetStringFromEmdeddedResource($"WRPCT.Server.{path}");
+            return FileResult(fileContent);
         }
 
         string GetIndexContent()
