@@ -35,9 +35,9 @@ namespace WRPCT.Services
             AllowGames = false;
         }
 
-        public void UpdateTimeCounter(int minutes, bool add)
+        public void UpdateTimeCounter(int minutes)
         {
-            var deltaTimeSpan = TimeSpan.FromMinutes(add ? minutes : -minutes);
+            var deltaTimeSpan = TimeSpan.FromMinutes(minutes);
             GamesTimeLeft = GamesTimeLeft.Add(deltaTimeSpan);
             if (GamesTimeLeft.TotalSeconds < 0)
                 GamesTimeLeft = new TimeSpan(0);

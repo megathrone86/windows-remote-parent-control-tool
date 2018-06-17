@@ -109,7 +109,10 @@ namespace WRPCT.Server
             foreach (var paramPairString in paramsString.Split(new char[] { '&' }))
             {
                 var ts = paramPairString.Split(new char[] { '=' });
-                result[ts[0]] = ts[1];
+                if (!string.IsNullOrEmpty(ts[0]))
+                {
+                    result[ts[0]] = string.IsNullOrEmpty(ts[1]) ? "" : ts[1];
+                }
             }
             return result;
         }

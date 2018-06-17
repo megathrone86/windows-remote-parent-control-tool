@@ -45,7 +45,7 @@ namespace WRPCT.Server
                 if (requestStringHeader.StartsWith("POST /UPDATE "))
                 {
                     var requestParams = GetParametersFromPost(requestString);
-                    MainService.Instance.ControlService.UpdateTimeCounter(int.Parse(requestParams["amount"]), requestParams.ContainsKey("add"));
+                    MainService.Instance.ControlService.UpdateTimeCounter(int.Parse(requestParams["amount"]));
                     return RedirectResult("/");
                 }
 
@@ -60,6 +60,8 @@ namespace WRPCT.Server
         string CreateFileResult(string path)
         {
             var fileContent = ResourceHelper.GetStringFromEmdeddedResource($"WRPCT.Server.{path}");
+            if (fileContent == null)
+                return HtmlResult("", HttpStatusCode.NotFound);
             return FileResult(fileContent);
         }
 

@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html>
 <head>
     <script src="/jquery-3.3.1.min.js"></script>
     <script src="/md5.js"></script>
@@ -28,14 +27,51 @@
         Осталось: <strong>{%%gamesTimeLeft%%}</strong>
     </div>
     <div>
-        <form action="update" method="post">
-            <input type="text" name="amount" value="60">
-            <button type="submit" name="add">Добавить минуты</button>
-            <button type="submit" name="distract">Вычесть минуты</button>
-        </form>
-        <form action="allowgames" method="post"><button type="submit">Разрешить игры</button></form>
-        <form action="disallowgames" method="post"><button type="submit">Запретить игры</button></form>
+        <div>
+            <input type="text" id="amount" value="60">
+            <button type="submit" name="add" onclick="updateMinutes(true)">Добавить минуты</button>
+            <button type="submit" name="distract" onclick="updateMinutes(false)">Вычесть минуты</button>
+        </div>
+
+        <div>
+            <button type="submit" onclick="enableGames()">Разрешить игры</button>
+            <button type="submit" onclick="disableGames()">Запретить игры</button>
+        </div>
     </div>
     <footer><a href="{%%projectUrl%%}">Страница проекта</a></footer>
+
+    <script type="text/javascript">
+        function showError() {
+            alert('Произошла ошибка при отправке запроса.');
+        }
+
+        function updateMinutes(positive) {
+            var amount = positive ? $('#amount').val() : -$('#amount').val();
+            $.post('update', { amount }, function (data) {
+                location.reload();
+            }).fail(function () {
+                showError();
+                location.reload();
+            });
+        }
+
+        function enableGames() {
+            $.post('allowgames', {}, function (data) {
+                location.reload();
+            }).fail(function () {
+                showError();
+                location.reload();
+            });
+        }
+
+        function disableGames() {
+            $.post('disallowgames', {}, function (data) {
+                location.reload();
+            }).fail(function () {
+                showError();
+                location.reload();
+            });
+        }
+    </script>
 </body>
 </html>
