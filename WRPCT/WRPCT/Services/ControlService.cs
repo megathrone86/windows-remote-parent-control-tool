@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WRPCT.BL;
+using WRPCT.Helpers;
+using static WRPCT.Helpers.ConfigHelper;
 
 namespace WRPCT.Services
 {
@@ -11,36 +14,25 @@ namespace WRPCT.Services
     /// </summary>
     public class ControlService
     {
-        /// <summary>
-        /// Вызывается, когда пользователь изменяет что-то в настройках системы
-        /// </summary>
-        public event EventHandler ParametersUpdated;
-
-        public bool AllowGames { get; set; }
-        public TimeSpan GamesTimeLeft { get; set; }
+        Config _params = ConfigHelper.Params;
 
         public ControlService()
         {
-            AllowGames = false;
-            GamesTimeLeft = TimeSpan.FromMinutes(120);
         }
 
         public void EnableGames()
         {
-            AllowGames = true;
+            GamesConfigManager.ChangeGamesEnabled(true);
         }
 
         public void DisableGames()
         {
-            AllowGames = false;
+            GamesConfigManager.ChangeGamesEnabled(false);
         }
 
         public void UpdateTimeCounter(int minutes)
         {
-            var deltaTimeSpan = TimeSpan.FromMinutes(minutes);
-            GamesTimeLeft = GamesTimeLeft.Add(deltaTimeSpan);
-            if (GamesTimeLeft.TotalSeconds < 0)
-                GamesTimeLeft = new TimeSpan(0);
+            GamesConfigManager.ChangeGamesTime(TimeSpan.FromMinutes(minutes));
         }
     }
 }

@@ -8,11 +8,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using WRPCT.Helpers;
 using WRPCT.Services;
+using static WRPCT.Helpers.ConfigHelper;
 
 namespace WRPCT.Server
 {
     public class WRPCTWebServer : WebServerBase
     {
+        Config _params = ConfigHelper.Params;
+
         protected override string OnRequest(string requestString)
         {
             try
@@ -69,8 +72,8 @@ namespace WRPCT.Server
         {
             string systemName = "TEST SYSTEM";
             string projectUrl = "https://github.com/megathrone86/windows-remote-parent-control-tool";
-            string gamesStatus = MainService.Instance.ControlService.AllowGames ? "Игры разрешены" : "Игры запрещены";
-            string gamesTimeLeft = MainService.Instance.ControlService.GamesTimeLeft.ToString();
+            string gamesStatus = _params.AllowGames ? "Игры разрешены" : "Игры запрещены";
+            string gamesTimeLeft = _params.GamesTimeLeft.ToString();
 
             var template = ResourceHelper.GetStringFromEmdeddedResource("WRPCT.Server.Index.html");
             template = template.Replace("{%%systemName%%}", systemName);
