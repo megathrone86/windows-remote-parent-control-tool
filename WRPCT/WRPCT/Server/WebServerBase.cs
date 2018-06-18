@@ -6,48 +6,44 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WRPCT.Helpers;
 
 namespace WRPCT.Server
 {
     public abstract class WebServerBase : IDisposable
     {
         TcpListener listener;
-        bool working;
-        Task listenerTask;
+        AsyncTaskManager asyncTaskManager;
 
-        public WebServerBase()
+        public WebServerBase(int port)
         {
-        }
-
-        public void Start(int port)
-        {
-            Stop();
-
             listener = new TcpListener(new IPEndPoint(IPAddress.Any, port));
-            listener.Start();
-
-            listenerTask = new Task(async () =>
+            asyncTaskManager = new AsyncTaskManager(async (cancellationToken) =>
             {
-                while (working)
+                while (!cancellationToken.IsCancellationRequested)
                 {
                     var client = await listener.AcceptTcpClientAsync();
-                    ProcessClient(client);
+                    cancellationToken.ThrowIfCancellationRequested();
+                    new Task(() => ProcessClient(client), cancellationToken).Start();
                 }
             });
-            working = true;
-            listenerTask.Start();
+        }
+
+        public void Start()
+        {
+            listener.Start();
+            asyncTaskManager.Start();
         }
 
         public void Stop()
         {
-            working = false;
-            listenerTask?.Wait();
+            asyncTaskManager.Stop();
             listener?.Stop();
         }
 
         public void Dispose()
         {
-            working = false;
+            asyncTaskManager.Dispose();
             listener?.Stop();
         }
 
@@ -70,11 +66,17 @@ namespace WRPCT.Server
 
         void ProcessClient(TcpClient client)
         {
-            var requestString = GetRequestString(client);
-            var result = OnRequest(requestString);
-            var sendBuffer = Encoding.UTF8.GetBytes(result);
-            client.GetStream().Write(sendBuffer, 0, sendBuffer.Length);
-            client.Close();
+            try
+            {
+                var requestString = GetRequestString(client);
+                var result = OnRequest(requestString);
+                var sendBuffer = Encoding.UTF8.GetBytes(result);
+                client.GetStream().Write(sendBuffer, 0, sendBuffer.Length);
+                client.Close();
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         protected string HtmlResult(string html, HttpStatusCode code = HttpStatusCode.OK)

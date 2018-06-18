@@ -47,7 +47,6 @@ namespace WRPCT
         private void Start()
         {
             MainService.Instance.Start();
-            MainService.Instance.Start();
         }
     }
 }

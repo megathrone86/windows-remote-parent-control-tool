@@ -16,6 +16,10 @@ namespace WRPCT.Server
     {
         Config _params = ConfigHelper.Params;
 
+        public WRPCTWebServer(int port) : base(port)
+        {
+        }
+
         protected override string OnRequest(string requestString)
         {
             try

@@ -57,9 +57,12 @@
     </ApplicationDefinition>
     <Compile Include="BL\GamesConfigManager.cs" />
     <Compile Include="Helpers\ApplicationFolders.cs" />
+    <Compile Include="Helpers\AsyncTaskManager.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
+    <Compile Include="Helpers\ProcessesHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Services\ControlService.cs" />
+    <Compile Include="Services\GamesMonitoringService.cs" />
     <Compile Include="Services\MainService.cs" />
     <Compile Include="Server\WebServerBase.cs" />
     <Compile Include="Server\WRPCTWebServer.cs" />
@@ -115,6 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server\Index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Server\styles.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Server\Index.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

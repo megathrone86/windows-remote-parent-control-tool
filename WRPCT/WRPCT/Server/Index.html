@@ -2,76 +2,49 @@
 <head>
     <script src="/jquery-3.3.1.min.js"></script>
     <script src="/md5.js"></script>
-    <style>
-        header {
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            margin-top: 10px;
-        }
-
-        form {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
 </head>
 <body>
-    <header>WRPCT - {%%systemName%%}</header>
-    <div>{%%currentTime%%}</div>
-    <div>
-        Статус системы: <strong>{%%gamesStatus%%}</strong>
+    <div class="groupbox">
+        <header>WRPCT - {%%systemName%%}</header>
+        <div>{%%currentTime%%}</div>
+        <div>
+            Статус системы: <strong>{%%gamesStatus%%}</strong>
+        </div>
+        <div>
+            <button type="button" onclick="enableGames()">Разрешить игры</button>
+            <button type="button" onclick="disableGames()">Запретить игры</button>
+        </div>
     </div>
-    <div>
-        Осталось: <strong>{%%gamesTimeLeft%%}</strong>
-    </div>
-    <div>
+
+    <div class="groupbox">
+        <header>Минуты</header>
+        <div>
+            Осталось <strong>{%%gamesTimeLeft%%}</strong>
+        </div>
         <div>
             <input type="text" id="amount" value="60">
-            <button type="submit" name="add" onclick="updateMinutes(true)">Добавить минуты</button>
-            <button type="submit" name="distract" onclick="updateMinutes(false)">Вычесть минуты</button>
-        </div>
-
-        <div>
-            <button type="submit" onclick="enableGames()">Разрешить игры</button>
-            <button type="submit" onclick="disableGames()">Запретить игры</button>
+            <button type="button" name="add" onclick="updateMinutes(true)">Добавить минуты</button>
+            <button type="button" name="distract" onclick="updateMinutes(false)">Вычесть минуты</button>
         </div>
     </div>
+
+    <div class="groupbox processesContainer">
+        <header>Список процессов</header>
+        <button type="button" onclick="refreshProcesses()">Обновить</button>
+        <div>
+            <select id="processSelect" size="8">
+                <!--<option>text1</option>
+                <option>text22222222222</option>
+                <option>text3</option>
+                <option>text4</option>
+                <option>text5</option>-->
+            </select>
+        </div>
+    </div>
+
     <footer><a href="{%%projectUrl%%}">Страница проекта</a></footer>
 
-    <script type="text/javascript">
-        function showError() {
-            alert('Произошла ошибка при отправке запроса.');
-        }
-
-        function updateMinutes(positive) {
-            var amount = positive ? $('#amount').val() : -$('#amount').val();
-            $.post('update', { amount }, function (data) {
-                location.reload();
-            }).fail(function () {
-                showError();
-                location.reload();
-            });
-        }
-
-        function enableGames() {
-            $.post('allowgames', {}, function (data) {
-                location.reload();
-            }).fail(function () {
-                showError();
-                location.reload();
-            });
-        }
-
-        function disableGames() {
-            $.post('disallowgames', {}, function (data) {
-                location.reload();
-            }).fail(function () {
-                showError();
-                location.reload();
-            });
-        }
-    </script>
+    <script type="text/javascript" src="/Index.js"></script>
 </body>
 </html>

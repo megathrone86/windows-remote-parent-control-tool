@@ -12,23 +12,28 @@ namespace WRPCT.Services
         static MainService instance;
         public static MainService Instance => instance ?? (instance = new MainService());
 
-        WRPCTWebServer webServer = new WRPCTWebServer();
+        WRPCTWebServer webServer;
+        GamesMonitoringService gamesMonitoringService;
 
         public ControlService ControlService { get; private set; }
 
         MainService()
         {
             ControlService = new ControlService();
+            webServer = new WRPCTWebServer(5400);
+            gamesMonitoringService = new GamesMonitoringService();
         }
 
         public void Start()
         {
-            webServer.Start(5400);
+            webServer.Start();
+            gamesMonitoringService.Start();
         }
 
         public void Dispose()
         {
             webServer.Dispose();
+            gamesMonitoringService.Dispose();
         }
     }
 }
