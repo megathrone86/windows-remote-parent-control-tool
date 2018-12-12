@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using WRPCT.Services;
 using WRPCT.Views;
 
@@ -15,6 +9,10 @@ namespace WRPCT
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             string command = e.Args.Length > 0 ? e.Args[0] : null;
@@ -34,17 +32,17 @@ namespace WRPCT
             };
         }
 
-        private void ShowSettings()
+        void ShowSettings()
         {
             SettingsWindow window = new SettingsWindow();
             window.Show();
         }
 
-        private void Stop()
+        void Stop()
         {
         }
 
-        private void Start()
+        void Start()
         {
             MainService.Instance.Start();
         }

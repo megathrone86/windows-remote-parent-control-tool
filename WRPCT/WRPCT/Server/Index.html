@@ -1,4 +1,5 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
     <script src="/jquery-3.3.1.min.js"></script>
     <script src="/md5.js"></script>
@@ -33,13 +34,14 @@
         <header>Список процессов</header>
         <button type="button" onclick="refreshProcesses()">Обновить</button>
         <div>
-            <select id="processSelect" size="8">
-                <!--<option>text1</option>
-                <option>text22222222222</option>
-                <option>text3</option>
-                <option>text4</option>
-                <option>text5</option>-->
-            </select>
+            <table id="processesTable">
+                <tr>
+                    <th></th>
+                    <th>Имя</th>
+                    <th>Путь</th>
+                    <th>Пользователь</th>
+                </tr>
+            </table>
         </div>
     </div>
 

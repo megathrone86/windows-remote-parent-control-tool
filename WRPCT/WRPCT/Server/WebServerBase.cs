@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -85,6 +86,13 @@ namespace WRPCT.Server
             return $"HTTP/1.1 {(int)code} {code}\nContent-type: text/html; charset=utf-8\nContent-Length:{htmlLength}\n\n" + html;
         }
 
+        protected string JsonResult(object reply, HttpStatusCode code = HttpStatusCode.OK)
+        {
+            string json = JsonConvert.SerializeObject(reply);
+            var jsonLength = Encoding.UTF8.GetByteCount(json);
+            return $"HTTP/1.1 {(int)code} {code}\nContent-type: text/json; charset=utf-8\nContent-Length:{jsonLength}\n\n" + json;
+        }
+
         protected string FileResult(string fileContent, HttpStatusCode code = HttpStatusCode.OK)
         {
             var fileLength = Encoding.UTF8.GetByteCount(fileContent);
@@ -109,7 +117,7 @@ namespace WRPCT.Server
             var paramsString = requestString.Substring(n).Trim();
             var result = new Dictionary<string, string>();
             foreach (var paramPairString in paramsString.Split(new char[] { '&' }))
-            {
+            { 
                 var ts = paramPairString.Split(new char[] { '=' });
                 if (!string.IsNullOrEmpty(ts[0]))
                 {

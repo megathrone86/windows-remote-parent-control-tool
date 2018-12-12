@@ -55,10 +55,18 @@ namespace WRPCT.Server
                     MainService.Instance.ControlService.UpdateTimeCounter(int.Parse(requestParams["amount"]));
                     return RedirectResult("/");
                 }
+                if (requestStringHeader.StartsWith("POST /GETPROCESSES "))
+                {
+                    var processes = ProcessesHelper.GetProcesses();
+                    return JsonResult(processes.Select(t =>
+                        new { name = t.FileName, path = t.FilePath, user = t.UserName }
+                    ).ToList());
+                }
 
                 //default
                 return HtmlResult("", HttpStatusCode.NotFound);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return HtmlResult(ex.ToString(), HttpStatusCode.InternalServerError);
             }

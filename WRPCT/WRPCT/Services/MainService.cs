@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WRPCT.Properties;
 using WRPCT.Server;
 
 namespace WRPCT.Services
@@ -20,8 +22,8 @@ namespace WRPCT.Services
         MainService()
         {
             ControlService = new ControlService();
-            webServer = new WRPCTWebServer(5400);
             gamesMonitoringService = new GamesMonitoringService();
+            webServer = new WRPCTWebServer(Settings.Default.Port);
         }
 
         public void Start()

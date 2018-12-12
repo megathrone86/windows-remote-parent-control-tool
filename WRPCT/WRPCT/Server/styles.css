@@ -23,3 +23,7 @@ form {
     .processesContainer div {
         display: inline-block;
     }*/
+
+tr td {
+  border-bottom:1pt solid black;
+}

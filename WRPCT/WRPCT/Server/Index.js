@@ -31,7 +31,19 @@ function disableGames() {
 }
 
 function refreshProcesses() {
-    $('#processSelect').empty();
+    $('#processesTable tr').not(':first').remove();
+    $.post('getProcesses', {}, function (data) {
+        var html = '';
+        data.forEach(function (process) {
+            html += '<tr>' +
+                '<td></td>' +
+                '<td>' + process.name + '</td>' +
+                '<td>' + process.path + '</td>' +
+                '<td>' + process.user + '</td>' +
+                '</tr>';
+        });
+        $('#processesTable tr').first().after(html);
+    });
 }
 
 $(document).ready(function () {
